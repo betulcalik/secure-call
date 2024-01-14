@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:secure_call/features/contacts/bloc/contacts_bloc.dart';
 import 'package:secure_call/features/contacts/bloc/contacts_state.dart';
 import 'package:secure_call/features/contacts/widgets/contact_card.dart';
+import 'package:secure_call/utils/custom_colors.dart';
 
 class ContactsScreen extends StatelessWidget {
   const ContactsScreen({super.key});
@@ -19,7 +20,7 @@ class ContactsScreen extends StatelessWidget {
             fontWeight: FontWeight.w600,
           ),
         ),
-        backgroundColor: Color(0xff2B3544),
+        backgroundColor: CustomColors.secondaryColor,
       ),
       body: BlocBuilder<ContactsBloc, ContactsState>(
         builder: (context, state) {
@@ -29,7 +30,7 @@ class ContactsScreen extends StatelessWidget {
             );
           } else if (state is LoadedContacts) {
             if (state.contacts.isEmpty) {
-              return Center(
+              return const Center(
                 child: Text('No contacts found.'),
               );
             } else {

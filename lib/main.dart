@@ -4,6 +4,7 @@ import 'package:secure_call/features/contacts/bloc/contacts_event.dart';
 import 'package:secure_call/features/contacts/utils/contact_repository.dart';
 import 'package:secure_call/features/contacts/widgets/contacts_screen.dart';
 import 'package:provider/provider.dart';
+import 'package:secure_call/utils/custom_colors.dart';
 
 void main() {
   runApp(MyApp());
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Color(0xff45A19D)),
+          colorScheme: ColorScheme.fromSeed(seedColor: CustomColors.primaryColor),
           fontFamily: 'Montserrat',
           useMaterial3: true,
         ),
