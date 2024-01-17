@@ -13,7 +13,27 @@ class ContactCard extends StatelessWidget {
         leading: CircleAvatar(
           backgroundImage: contact.photo != null ? Image.memory(contact.photo!).image : null,
         ),
-        title: Text(contact.displayName),
+        title: Row(
+          children: [
+            Expanded(
+                child: Text(contact.displayName)
+            ),
+            Ink(
+              decoration: const ShapeDecoration(
+                color: CustomColors.primaryColor,
+                shape: CircleBorder()
+              ),
+              child: IconButton(
+                icon: const Icon(
+                    Icons.call,
+                    color: Colors.white),
+                onPressed: () {
+                  // Call action here
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
