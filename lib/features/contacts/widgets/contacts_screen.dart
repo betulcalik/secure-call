@@ -22,27 +22,49 @@ class ContactsScreen extends StatelessWidget {
         ),
         backgroundColor: CustomColors.secondaryColor,
       ),
-      body: BlocBuilder<ContactsBloc, ContactsState>(
-        builder: (context, state) {
-          if (state is LoadingContacts) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          } else if (state is LoadedContacts) {
-            if (state.contacts.isEmpty) {
-              return const Center(
-                child: Text('No contacts found.'),
-              );
-            } else {
-              return ListView.builder(
-                itemCount: state.contacts.length,
-                itemBuilder: (context, index) => ContactCard(contact: state.contacts[index]),
-              );
-            }
-          } else {
-            return Container();
-          }
-        },
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              decoration: InputDecoration(
+                filled: true,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                  borderSide: BorderSide.none,
+                ),
+                hintText: "Search contacts",
+                suffixIcon: Icon(Icons.search),
+                isDense: true, // decrease height of textfield
+              ),
+            ),
+          ),
+          Expanded(
+            child: BlocBuilder<ContactsBloc, ContactsState>(
+              builder: (context, state) {
+                if (state is LoadingContacts) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else if (state is LoadedContacts) {
+                  if (state.contacts.isEmpty) {
+                    return const Center(
+                      child: Text('No contacts found.'),
+                    );
+                  } else {
+                    return ListView.builder(
+                      itemCount: state.contacts.length,
+                      itemBuilder: (context, index) =>
+                          ContactCard(contact: state.contacts[index]),
+                    );
+                  }
+                } else {
+                  return Container();
+                }
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
