@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_contacts/contact.dart';
 import 'package:secure_call/features/contacts/constants/contact_card_icon_type.dart';
+import 'package:secure_call/features/favorites/widgets/favorite_button.dart';
 import 'package:secure_call/utils/custom_colors.dart';
 
 class ContactCard extends StatelessWidget {
@@ -21,15 +22,7 @@ class ContactCard extends StatelessWidget {
             },
         );
       case ContactCardIconType.favorite:
-        return IconButton(
-          icon: const Icon(
-            Icons.star_outline,
-            color: Colors.white,
-          ),
-          onPressed: () {
-
-          },
-        );
+        return FavoriteButton(contact: contact);
       case ContactCardIconType.noIcon:
         return Container();
     }
@@ -49,7 +42,6 @@ class ContactCard extends StatelessWidget {
             ),
             Ink(
               decoration: const ShapeDecoration(
-                color: CustomColors.primaryColor,
                 shape: CircleBorder()
               ),
               child: cardIcon(),

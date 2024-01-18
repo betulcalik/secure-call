@@ -68,20 +68,29 @@ class _MainScreenState extends State<MainScreen> {
         },
         selectedIndex: currentPageIndex,
         height: 60,
-        destinations: const [
+        destinations: [
           NavigationDestination(
-            selectedIcon: Icon(Icons.star),
-            icon: Icon(Icons.star_border),
+            selectedIcon: Icon(
+                Icons.favorite,
+                color: Colors.red.shade300,
+            ),
+            icon: const Icon(Icons.favorite_border),
             label: "Favorites",
           ),
           NavigationDestination(
-              selectedIcon: Icon(Icons.call),
-              icon: Icon(Icons.call),
+              selectedIcon: Icon(
+                Icons.call,
+                color: Colors.cyan.shade300,
+              ),
+              icon: const Icon(Icons.call_outlined),
               label: "Calls",
           ),
           NavigationDestination(
-            selectedIcon: Icon(Icons.person),
-            icon: Icon(Icons.person_outline),
+            selectedIcon: Icon(
+                Icons.person,
+                color: Colors.orange.shade300,
+            ),
+            icon: const Icon(Icons.person_outline),
             label: "Contacts",
           ),
         ],
