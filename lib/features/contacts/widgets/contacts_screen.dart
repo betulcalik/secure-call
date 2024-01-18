@@ -4,9 +4,28 @@ import 'package:secure_call/features/contacts/bloc/contacts_bloc.dart';
 import 'package:secure_call/features/contacts/bloc/contacts_state.dart';
 import 'package:secure_call/features/contacts/widgets/contact_card.dart';
 import 'package:secure_call/utils/custom_colors.dart';
+import 'package:flutter_contacts/contact.dart';
 
-class ContactsScreen extends StatelessWidget {
+class ContactsScreen extends StatefulWidget {
   const ContactsScreen({super.key});
+
+  @override
+  State<StatefulWidget> createState() => _ContactsScreenState();
+}
+
+class _ContactsScreenState extends State<ContactsScreen> {
+  List<Contact> _contacts = [];
+  List<Contact> _filteredContacts = [];
+
+  onSearch(String searchText) {
+    setState(() {
+      _filteredContacts = _contacts
+          .where((contact) => contact.displayName
+          .toLowerCase()
+          .contains(searchText.toLowerCase()))
+          .toList();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,17 +43,23 @@ class ContactsScreen extends StatelessWidget {
       ),
       body: Column(
         children: [
-          Padding(
+          Container(
             padding: const EdgeInsets.all(8.0),
+            height: 60,
             child: TextField(
+              onChanged: (value) => onSearch(value),
               decoration: InputDecoration(
                 filled: true,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8.0),
                   borderSide: BorderSide.none,
                 ),
+                hintStyle: TextStyle(
+                  fontSize: 14,
+                  color: Colors.grey.shade500,
+                ),
                 hintText: "Search contacts",
-                suffixIcon: Icon(Icons.search),
+                prefixIcon: Icon(Icons.search),
                 isDense: true, // decrease height of textfield
               ),
             ),
@@ -52,10 +77,12 @@ class ContactsScreen extends StatelessWidget {
                       child: Text('No contacts found.'),
                     );
                   } else {
+                    _contacts = state.contacts;
+
                     return ListView.builder(
-                      itemCount: state.contacts.length,
+                      itemCount: _filteredContacts.length,
                       itemBuilder: (context, index) =>
-                          ContactCard(contact: state.contacts[index]),
+                          ContactCard(contact: _filteredContacts[index]),
                     );
                   }
                 } else {
