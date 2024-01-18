@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:secure_call/features/contacts/constants/contact_card_icon_type.dart';
+import 'package:secure_call/features/favorites/widgets/add_favorite_screen.dart';
 import '../../utils/custom_colors.dart';
 import 'package:secure_call/features/contacts/widgets/contacts_screen.dart';
 import '../favorites/widgets/favorites_screen.dart';
@@ -14,6 +16,15 @@ class _MainScreenState extends State<MainScreen> {
   int currentPageIndex = 0;
   String appBarTitle = 'Favorites';
 
+  void _showAddFavoriteScreen(BuildContext context) {
+      showModalBottomSheet(
+          context: context,
+          builder: (context) {
+            return const AddFavoriteScreen();
+          }
+      );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,6 +38,19 @@ class _MainScreenState extends State<MainScreen> {
           ),
         ),
         backgroundColor: CustomColors.secondaryColor,
+        actions: currentPageIndex == 0 ? [
+            Container(
+              padding: const EdgeInsets.all(8.0),
+              child: FloatingActionButton(
+                onPressed: () {
+                  _showAddFavoriteScreen(context);
+                },
+                mini: true,
+                backgroundColor: CustomColors.primaryColor,
+                child: const Icon(Icons.add),
+              ),
+            )
+        ] : [],
       ),
       bottomNavigationBar: NavigationBar(
         onDestinationSelected: (int index) {
@@ -63,9 +87,9 @@ class _MainScreenState extends State<MainScreen> {
         ],
       ),
       body: [
-          FavoritesScreen(),
+          const FavoritesScreen(),
           Container(),
-          ContactsScreen(),
+          const ContactsScreen(iconType: ContactCardIconType.noIcon),
       ][currentPageIndex],
     );
   }

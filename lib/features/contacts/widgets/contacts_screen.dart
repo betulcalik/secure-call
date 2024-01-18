@@ -3,12 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:secure_call/features/contacts/bloc/contacts_bloc.dart';
 import 'package:secure_call/features/contacts/bloc/contacts_state.dart';
 import 'package:secure_call/features/contacts/widgets/contact_card.dart';
-import 'package:secure_call/utils/custom_colors.dart';
 import 'package:flutter_contacts/contact.dart';
 import '../bloc/contacts_event.dart';
+import '../constants/contact_card_icon_type.dart';
 
 class ContactsScreen extends StatefulWidget {
-  const ContactsScreen({super.key});
+  final ContactCardIconType iconType;
+  const ContactsScreen({super.key, required this.iconType});
 
   @override
   State<StatefulWidget> createState() => _ContactsScreenState();
@@ -55,7 +56,7 @@ class _ContactsScreenState extends State<ContactsScreen> {
                   color: Colors.grey.shade500,
                 ),
                 hintText: "Search contacts",
-                prefixIcon: Icon(Icons.search),
+                prefixIcon: const Icon(Icons.search),
                 isDense: true, // decrease height of textfield
               ),
             ),
@@ -76,7 +77,7 @@ class _ContactsScreenState extends State<ContactsScreen> {
                   return ListView.builder(
                     itemCount: _filteredContacts.length,
                     itemBuilder: (context, index) =>
-                        ContactCard(contact: _filteredContacts[index]),
+                        ContactCard(contact: _filteredContacts[index], iconType: widget.iconType),
                   );
                 } else {
                   return Container();
