@@ -5,6 +5,7 @@ import 'package:secure_call/features/contacts/bloc/contacts_state.dart';
 import 'package:secure_call/features/contacts/widgets/contact_card.dart';
 import 'package:secure_call/utils/custom_colors.dart';
 import 'package:flutter_contacts/contact.dart';
+import '../bloc/contacts_event.dart';
 
 class ContactsScreen extends StatefulWidget {
   const ContactsScreen({super.key});
@@ -17,12 +18,19 @@ class _ContactsScreenState extends State<ContactsScreen> {
   List<Contact> _contacts = [];
   List<Contact> _filteredContacts = [];
 
+  @override
+  void initState() {
+    super.initState();
+    context.read<ContactsBloc>().add(LoadContacts());
+  }
+
   onSearch(String searchText) {
     setState(() {
-      _filteredContacts = _contacts
-          .where((contact) => contact.displayName
-          .toLowerCase()
-          .contains(searchText.toLowerCase()))
+      _filteredContacts = searchText.isEmpty
+          ? _contacts
+          : _contacts
+          .where((contact) =>
+          contact.displayName.toLowerCase().contains(searchText.toLowerCase()))
           .toList();
     });
   }
@@ -72,19 +80,16 @@ class _ContactsScreenState extends State<ContactsScreen> {
                     child: CircularProgressIndicator(),
                   );
                 } else if (state is LoadedContacts) {
-                  if (state.contacts.isEmpty) {
-                    return const Center(
-                      child: Text('No contacts found.'),
-                    );
-                  } else {
+                  if (_contacts.isEmpty) {
                     _contacts = state.contacts;
-
-                    return ListView.builder(
-                      itemCount: _filteredContacts.length,
-                      itemBuilder: (context, index) =>
-                          ContactCard(contact: _filteredContacts[index]),
-                    );
+                    _filteredContacts = state.contacts;
                   }
+
+                  return ListView.builder(
+                    itemCount: _filteredContacts.length,
+                    itemBuilder: (context, index) =>
+                        ContactCard(contact: _filteredContacts[index]),
+                  );
                 } else {
                   return Container();
                 }
