@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:secure_call/features/contacts/bloc/contacts_bloc.dart';
 import 'package:secure_call/features/contacts/bloc/contacts_event.dart';
 import 'package:secure_call/features/contacts/utils/contact_repository.dart';
-import 'package:secure_call/features/contacts/widgets/contacts_screen.dart';
 import 'package:provider/provider.dart';
+import 'package:secure_call/features/main/main_screen.dart';
 import 'package:secure_call/utils/custom_colors.dart';
 
 void main() {
@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
           fontFamily: 'Montserrat',
           useMaterial3: true,
         ),
-        home: const ContactsScreen(),
+        home: const MainScreen(),
       )
     );
   }

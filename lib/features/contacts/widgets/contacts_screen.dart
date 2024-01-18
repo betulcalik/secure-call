@@ -37,19 +37,7 @@ class _ContactsScreenState extends State<ContactsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Contacts',
-          style: TextStyle(
-            color: Colors.white,
-            fontFamily: 'Source Sans 3',
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        backgroundColor: CustomColors.secondaryColor,
-      ),
-      body: Column(
+    return Column(
         children: [
           Container(
             padding: const EdgeInsets.all(8.0),
@@ -97,7 +85,6 @@ class _ContactsScreenState extends State<ContactsScreen> {
             ),
           ),
         ],
-      ),
     );
   }
 }

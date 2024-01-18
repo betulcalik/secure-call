@@ -10,9 +10,9 @@ class ContactCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: ListTile(
-        leading: CircleAvatar(
-          backgroundImage: contact.photo != null ? Image.memory(contact.photo!).image : null,
-        ),
+        leading: contact.photo != null ? CircleAvatar(
+          backgroundImage: Image.memory(contact.photo!).image,
+        ) : null,
         title: Row(
           children: [
             Expanded(
