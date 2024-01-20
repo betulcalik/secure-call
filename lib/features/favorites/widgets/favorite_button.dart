@@ -1,8 +1,9 @@
-
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_contacts/contact.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:convert';
+import 'package:secure_call/features/favorites/bloc/favorites_bloc.dart';
+import '../bloc/favorites_event.dart';
+import '../bloc/favorites_state.dart';
 
 class FavoriteButton extends StatefulWidget {
   final Contact contact;
@@ -13,48 +14,33 @@ class FavoriteButton extends StatefulWidget {
 }
 
 class _FavoriteButtonState extends State<FavoriteButton> {
-  Map<String, bool> _favorites = {};
-
-  @override
-  void initState() {
-      super.initState();
-      _loadFavorites();
-  }
-
-  Future<void> _loadFavorites() async {
-      final prefs = await SharedPreferences.getInstance();
-      final jsonString = prefs.getString("favorite_contact");
-
-      if (jsonString != null) {
-        setState(() {
-            _favorites = Map<String, bool>.from(json.decode(jsonString));
-        });
-      }
-  }
-
-  Future<void> _toggleFavorite(String id) async {
-    final prefs = await SharedPreferences.getInstance();
-
-    setState(() {
-      _favorites[id] = !(_favorites[id] ?? false);
-      prefs.setString("favorite_contact", json.encode(_favorites));
-    });
+  void _toggleFavorite(String id) {
+    BlocProvider.of<FavoritesBloc>(context).add(SetFavoriteContact(id));
   }
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-      icon: (
-          _favorites[widget.contact.id] == true
-          ? Icon(
-            Icons.favorite,
-            color: Colors.red.shade300)
-          : Icon(
-            Icons.favorite_border,
-            color: Colors.red.shade300,
-            )
-      ),
-      onPressed: () => _toggleFavorite(widget.contact.id),
+    return BlocBuilder<FavoritesBloc, FavoritesState>(
+      builder: (context, state) {
+        if (state is LoadedFavoriteContacts) {
+          return IconButton(
+            icon: (
+                state.contacts.any((contact) => contact.id == widget.contact.id)
+                    ? Icon(
+                  Icons.favorite,
+                  color: Colors.red.shade300,
+                )
+                    : Icon(
+                  Icons.favorite_border,
+                  color: Colors.red.shade300,
+                )
+            ),
+            onPressed: () => _toggleFavorite(widget.contact.id),
+          );
+        } else {
+          return const CircularProgressIndicator();
+        }
+      },
     );
   }
 }
