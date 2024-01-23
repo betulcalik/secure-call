@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_contacts/contact.dart';
 import 'package:secure_call/features/favorites/bloc/favorites_bloc.dart';
-import '../bloc/favorites_event.dart';
-import '../bloc/favorites_state.dart';
+import '../../features/favorites/bloc/favorites_event.dart';
+import '../../features/favorites/bloc/favorites_state.dart';
 
 class FavoriteButton extends StatefulWidget {
   final Contact contact;

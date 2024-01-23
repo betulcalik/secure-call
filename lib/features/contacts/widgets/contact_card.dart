@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_contacts/contact.dart';
 import 'package:secure_call/features/contacts/constants/contact_card_icon_type.dart';
-import 'package:secure_call/features/favorites/widgets/favorite_button.dart';
+import 'package:secure_call/widgets/buttons/favorite_button.dart';
 
 class ContactCard extends StatelessWidget {
   final Contact contact;
