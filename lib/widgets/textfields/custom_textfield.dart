@@ -8,6 +8,7 @@ class CustomTextField extends StatefulWidget {
   final bool isPhone;
   final bool showErrorMessage;
   final String errorMessage;
+  final ValueChanged<String>? onChanged;
 
   const CustomTextField({
     super.key,
@@ -17,6 +18,7 @@ class CustomTextField extends StatefulWidget {
     this.isPhone = false,
     this.showErrorMessage = false,
     this.errorMessage = '',
+    this.onChanged,
   });
 
   @override
@@ -25,7 +27,6 @@ class CustomTextField extends StatefulWidget {
 
 class _CustomTextFieldState extends State<CustomTextField> {
   bool _isPasswordVisible = false;
-  bool _isFocused = false;
   String? _errorText;
   late FocusNode _focusNode;
 
@@ -86,6 +87,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
       focusNode: _focusNode,
       onChanged: (text) {
         _updateErrorText(text);
+        widget.onChanged?.call(text); // Notify parent about text change
       },
       onEditingComplete: () {
         _updateErrorText(widget.controller.text);

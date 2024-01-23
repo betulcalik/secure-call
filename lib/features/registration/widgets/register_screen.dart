@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:secure_call/widgets/buttons/country_code_button.dart';
 import 'package:secure_call/widgets/forms/registration_form.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -10,18 +9,26 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
-  late TextEditingController _controller;
+  bool _isValid = false;
+  String _currentCountryCode = "";
+  late TextEditingController _phoneController;
+  late TextEditingController _passwordController;
 
   @override
   void initState() {
     super.initState();
-    _controller = TextEditingController();
+    _phoneController = TextEditingController();
+    _passwordController = TextEditingController();
   }
 
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
+  void _updateValidity() {
+    setState(() {
+      // Check if phone number, password, and country code are valid
+      _isValid = _phoneController.text.isNotEmpty &&
+          _passwordController.text.isNotEmpty &&
+          _passwordController.text.length >= 6 &&
+          _currentCountryCode.isNotEmpty;
+    });
   }
 
   @override
@@ -44,14 +51,24 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       fontWeight: FontWeight.w600),
                 ),
                 const SizedBox(height: 20),
-                const RegistrationForm(),
+                RegistrationForm(
+                  phoneController: _phoneController,
+                  passwordController: _passwordController,
+                  onTextChanged: _updateValidity,
+                  onCountryCodeChanged: (newCountryCode) {
+                    setState(() {
+                      _currentCountryCode = newCountryCode;
+                      _updateValidity();
+                    });
+                  },
+                ),
                 const SizedBox(height: 20),
                 Align(
                   alignment: Alignment.centerRight,
                   child: ElevatedButton(
-                    onPressed: () {
+                    onPressed: _isValid ? () {
                       // Add your next button functionality here
-                    },
+                    } : null,
                     child: const Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
