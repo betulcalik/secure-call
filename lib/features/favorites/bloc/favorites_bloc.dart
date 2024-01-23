@@ -22,5 +22,16 @@ class FavoritesBloc extends Bloc<FavoritesEvent, FavoritesState> {
       final contacts = await favoritesRepository.getFavoriteContacts();
       emit(LoadedFavoriteContacts(contacts));
     });
+
+    on<SearchFavoriteContacts>((event, emit) async {
+      emit(LoadingFavoriteContacts());
+      try {
+        final contacts = await favoritesRepository.getFavoriteContacts();
+        final filteredContacts = contacts.where((contact) => contact.displayName.toLowerCase().contains(event.searchTerm.toLowerCase())).toList();
+        emit(LoadedFavoriteContacts(filteredContacts));
+      } catch (_) {
+        emit(LoadedFavoriteContacts([]));
+      }
+    });
   }
 }

@@ -38,7 +38,7 @@ class _FavoriteButtonState extends State<FavoriteButton> {
             onPressed: () => _toggleFavorite(widget.contact.id),
           );
         } else {
-          return const CircularProgressIndicator();
+          return Container();
         }
       },
     );
