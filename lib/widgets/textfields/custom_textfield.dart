@@ -91,6 +91,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
       },
       onEditingComplete: () {
         _updateErrorText(widget.controller.text);
+        FocusScope.of(context).unfocus();
       },
       decoration: InputDecoration(
         filled: true,
