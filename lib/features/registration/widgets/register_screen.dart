@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:secure_call/features/registration/widgets/verify_phone_screen.dart';
 import 'package:secure_call/widgets/forms/registration_form.dart';
 
 import 'login_screen.dart';
@@ -37,6 +38,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
           _passwordController.text.length >= 6 &&
           _currentCountryCode.isNotEmpty;
     });
+  }
+
+  void _register() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => VerifyPhoneScreen(phone: _phoneController.text)),
+    );
+  }
+
+  void _routeLoginScreen() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => const LoginScreen()),
+    );
   }
 
   @override
@@ -94,13 +111,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 8.0),
                           child: GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const LoginScreen()),
-                              );
-                            },
+                            onTap: () => _routeLoginScreen(),
                             child: const Row(
                               children: [
                                 Text("Already have an account?"),
@@ -125,10 +136,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       alignment: Alignment.centerRight,
                       child: ElevatedButton(
                         onPressed: _isValid
-                            ? () {
-                                // Add your next button functionality here
-                              }
-                            : null,
+                            ? () { _register(); } : null,
                         child: const Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
