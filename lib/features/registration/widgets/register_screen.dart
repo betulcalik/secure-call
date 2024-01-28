@@ -51,6 +51,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       model: RegisterModel(
         firstName: _firstNameController.text,
         lastName: _lastNameController.text,
+        countryCode: _currentCountryCode,
         phone: _phoneController.text,
         password: _passwordController.text,
       ),
