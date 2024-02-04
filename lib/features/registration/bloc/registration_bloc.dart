@@ -8,20 +8,20 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
 
   RegistrationBloc(this.registrationRepository) : super(RegistrationInitial()) {
     on<RegisterEvent>((event, emit) async {
-      bool result = await registrationRepository.register(event.model);
-      if (result) {
-        emit(RegisterSuccess(message: 'Registration successful'));
+      Map<String, dynamic> result = await registrationRepository.register(event.model);
+      if (result["success"]) {
+        emit(RegisterSuccess(message: result["message"]));
       } else {
-        emit(RegisterFailure(message: 'Registration failed'));
+        emit(RegisterFailure(message: result["message"]));
       }
     });
 
     on<LoginEvent>((event, emit) async {
-      bool result = await registrationRepository.login(event.model);
-      if (result) {
-        emit(LoginSuccess(message: 'Login successful'));
+      Map<String, dynamic> result = await registrationRepository.login(event.model);
+      if (result["success"]) {
+        emit(LoginSuccess(message: result["message"]));
       } else {
-        emit(LoginFailure(message: 'Login failed'));
+        emit(LoginFailure(message: result["message"]));
       }
     });
 

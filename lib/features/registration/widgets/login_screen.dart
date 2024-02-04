@@ -28,6 +28,15 @@ class _LoginScreenState extends State<LoginScreen> {
     _passwordController = TextEditingController();
   }
 
+  void _updateValidity() {
+    setState(() {
+      // Check if name, phone number, password, and country code are valid
+      _isValid = _phoneController.text.isNotEmpty &&
+          _passwordController.text.isNotEmpty &&
+          _passwordController.text.length >= 6;
+    });
+  }
+
   void _login() {
     LoginEvent event = LoginEvent(
         model: LoginModel(
@@ -39,15 +48,6 @@ class _LoginScreenState extends State<LoginScreen> {
     BlocProvider.of<RegistrationBloc>(context).add(event);
   }
 
-  void _updateValidity() {
-    setState(() {
-      // Check if name, phone number, password, and country code are valid
-      _isValid = _phoneController.text.isNotEmpty &&
-          _passwordController.text.isNotEmpty &&
-          _passwordController.text.length >= 6;
-    });
-  }
-
   void _routeMainScreen() {
     Navigator.push(
       context,
@@ -57,16 +57,17 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  void _showErrorPopup(BuildContext context) {
+  void _showErrorPopup(BuildContext context, String message) {
     if (_isErrorPopupShown) return;
-
     _isErrorPopupShown = true;
 
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return const CustomPopup(
-            title: "Error", message: "Login failed. Please try again.");
+        return CustomPopup(
+            title: "Error",
+            message: message
+        );
       },
     ).then((_) {
       _isErrorPopupShown = false;
@@ -83,7 +84,7 @@ class _LoginScreenState extends State<LoginScreen> {
           });
         } else if (state is LoginFailure) {
           WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-            _showErrorPopup(context);
+            _showErrorPopup(context, state.message);
           });
         }
       },

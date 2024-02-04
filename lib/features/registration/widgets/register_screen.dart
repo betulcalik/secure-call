@@ -76,16 +76,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  void _showErrorPopup(BuildContext context) {
+  void _showErrorPopup(BuildContext context, String message) {
     if (_isErrorPopupShown) return;
-
     _isErrorPopupShown = true;
 
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return const CustomPopup(
-            title: "Error", message: "Registration failed. Please try again.");
+        return CustomPopup(
+            title: "Error",
+            message: message
+        );
       },
     ).then((_) {
       _isErrorPopupShown = false;
@@ -102,7 +103,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           });
         } else if (state is RegisterFailure) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
-            _showErrorPopup(context);
+            _showErrorPopup(context, state.message);
           });
         }
       },

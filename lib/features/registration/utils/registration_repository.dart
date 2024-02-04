@@ -8,7 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class RegistrationRepository {
   String url = "http://localhost:5000";
 
-  Future<bool> register(RegisterModel model) async {
+  Future<Map<String, dynamic>> register(RegisterModel model) async {
     var response = await http.post(
       Uri.parse('$url/register'),
       body: {
@@ -25,13 +25,19 @@ class RegistrationRepository {
 
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setString('token', token);
-      return true;
+      return {'success': true, 'message': 'Registration successful'};
     }
 
-    return false;
+    if (response.body.isNotEmpty) {
+      var errorResponse = jsonDecode(response.body);
+      String errorMessage = errorResponse['message'];
+      return {'success': false, 'message': errorMessage};
+    }
+
+    return {'success': false, 'message': 'Unexpected error occurred'};
   }
 
-  Future<bool> login(LoginModel model) async {
+  Future<Map<String, dynamic>> login(LoginModel model) async {
     var response = await http.post(
       Uri.parse('$url/login'),
       body: {
@@ -41,10 +47,16 @@ class RegistrationRepository {
     );
 
     if (response.statusCode == 200) {
-      return true;
+      return {'success': true, 'message': 'Login successful'};
     }
 
-    return false;
+    if (response.body.isNotEmpty) {
+      var errorResponse = jsonDecode(response.body);
+      String errorMessage = errorResponse['message'];
+      return {'success': false, 'message': errorMessage};
+    }
+
+    return {'success': false, 'message': 'Unexpected error occurred'};
   }
 
   Future<void> logout() async {
