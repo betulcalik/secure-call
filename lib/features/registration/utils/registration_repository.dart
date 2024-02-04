@@ -96,7 +96,7 @@ class RegistrationRepository {
     );
 
     if (response.statusCode == 200) {
-      return {'success': true, 'message': 'Verify successful'};
+      return {'success': true, 'message': 'Resend code successful'};
     }
 
     if (response.body.isNotEmpty) {
