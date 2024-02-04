@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:secure_call/features/registration/bloc/registration_state.dart';
+import 'package:secure_call/features/registration/models/resend_code_model.dart';
 import '../../../widgets/boxes/otp_box.dart';
 import '../../../widgets/popups/CustomPopup.dart';
 import '../../main/main_screen.dart';
@@ -51,8 +52,25 @@ class _VerifyPhoneScreenState extends State<VerifyPhoneScreen> {
     BlocProvider.of<RegistrationBloc>(context).add(event);
   }
 
+  void _resendCode() {
+    ResendCodeEvent event = ResendCodeEvent(
+        model: ResendCodeModel(
+          phone: widget.phone
+        )
+    );
+
+    BlocProvider.of<RegistrationBloc>(context).add(event);
+  }
+
   void _generateOTPBoxes() {
     otpBoxes = controllers.map((controller) => OTPBox(isFilled: controller.text.isNotEmpty, controller: controller)).toList();
+  }
+
+  void _clearOTPBoxes() {
+    for (var controller in controllers) {
+      controller.clear();
+    }
+    _generateOTPBoxes(); // Update the OTP boxes after clearing
   }
 
   void _updateIsValid() {
@@ -72,7 +90,7 @@ class _VerifyPhoneScreenState extends State<VerifyPhoneScreen> {
     );
   }
 
-  void _showErrorPopup(BuildContext context, String message) {
+  void _showPopup(BuildContext context, String title, String message) {
     if (_isErrorPopupShown) return;
     _isErrorPopupShown = true;
 
@@ -80,7 +98,7 @@ class _VerifyPhoneScreenState extends State<VerifyPhoneScreen> {
       context: context,
       builder: (BuildContext context) {
         return CustomPopup(
-            title: "Error",
+            title: title,
             message: message
         );
       },
@@ -99,7 +117,16 @@ class _VerifyPhoneScreenState extends State<VerifyPhoneScreen> {
           });
         } else if (state is VerifyFailure) {
           WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-            _showErrorPopup(context, state.message);
+            _showPopup(context, "Error", state.message);
+          });
+        } else if (state is ResendCodeSuccess) {
+          WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+            _showPopup(context, "Success", "Code sent successfully.");
+            _clearOTPBoxes();
+          });
+        } else if (state is ResendCodeFailure) {
+          WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+            _showPopup(context, "Error", state.message);
           });
         }
       },
@@ -146,7 +173,7 @@ class _VerifyPhoneScreenState extends State<VerifyPhoneScreen> {
                           padding: const EdgeInsets.symmetric(horizontal: 8.0),
                           child: GestureDetector(
                             onTap: () {
-
+                              _resendCode();
                             },
                             child: const Row(
                               mainAxisAlignment: MainAxisAlignment.center,

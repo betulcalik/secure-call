@@ -38,5 +38,14 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
         emit(VerifyFailure(message: result["message"]));
       }
     });
+
+    on<ResendCodeEvent>((event, emit) async {
+      Map<String, dynamic> result = await registrationRepository.resendCode(event.model);
+      if (result["success"]) {
+        emit(ResendCodeSuccess());
+      } else {
+        emit(ResendCodeFailure(message: result["message"]));
+      }
+    });
   }
 }

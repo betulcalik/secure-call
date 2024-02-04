@@ -25,3 +25,11 @@ class VerifyFailure extends RegistrationState {
 
   VerifyFailure({required this.message});
 }
+
+class ResendCodeSuccess extends RegistrationState { }
+
+class ResendCodeFailure extends RegistrationState {
+  final String message;
+
+  ResendCodeFailure({required this.message});
+}
