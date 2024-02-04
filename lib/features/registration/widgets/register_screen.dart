@@ -96,11 +96,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget build(BuildContext context) {
     return BlocListener<RegistrationBloc, RegistrationState>(
       listener: (context, state) {
-        if (state is RegistrationSuccess) {
+        if (state is RegisterSuccess) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
             _routeVerifyPhoneScreen();
           });
-        } else if (state is RegistrationFailure) {
+        } else if (state is RegisterFailure) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
             _showErrorPopup(context);
           });
