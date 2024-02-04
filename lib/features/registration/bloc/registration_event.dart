@@ -1,3 +1,4 @@
+import '../models/verify_model.dart';
 import '../models/login_model.dart';
 import '../models/register_model.dart';
 
@@ -16,3 +17,9 @@ class LoginEvent extends RegistrationEvent {
 }
 
 class LogoutEvent extends RegistrationEvent {}
+
+class VerifyEvent extends RegistrationEvent {
+  final VerifyModel model;
+
+  VerifyEvent({required this.model});
+}

@@ -2,11 +2,7 @@ abstract class RegistrationState {}
 
 class RegistrationInitial extends RegistrationState {}
 
-class RegisterSuccess extends RegistrationState {
-  final String message;
-
-  RegisterSuccess({required this.message});
-}
+class RegisterSuccess extends RegistrationState { }
 
 class RegisterFailure extends RegistrationState {
   final String message;
@@ -14,14 +10,18 @@ class RegisterFailure extends RegistrationState {
   RegisterFailure({required this.message});
 }
 
-class LoginSuccess extends RegistrationState {
-  final String message;
-
-  LoginSuccess({required this.message});
-}
+class LoginSuccess extends RegistrationState { }
 
 class LoginFailure extends RegistrationState {
   final String message;
 
   LoginFailure({required this.message});
+}
+
+class VerifySuccess extends RegistrationState { }
+
+class VerifyFailure extends RegistrationState {
+  final String message;
+
+  VerifyFailure({required this.message});
 }

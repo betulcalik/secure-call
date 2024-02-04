@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:secure_call/features/registration/models/login_model.dart';
 import 'package:secure_call/features/registration/models/register_model.dart';
+import 'package:secure_call/features/registration/models/verify_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class RegistrationRepository {
@@ -61,5 +62,27 @@ class RegistrationRepository {
 
   Future<void> logout() async {
 
+  }
+
+  Future<Map<String, dynamic>> verify(VerifyModel model) async {
+    var response = await http.post(
+      Uri.parse('$url/login'),
+      body: {
+        'phone': model.phone,
+        'code': model.code,
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return {'success': true, 'message': 'Verify successful'};
+    }
+
+    if (response.body.isNotEmpty) {
+      var errorResponse = jsonDecode(response.body);
+      String errorMessage = errorResponse['message'];
+      return {'success': false, 'message': errorMessage};
+    }
+
+    return {'success': false, 'message': 'Unexpected error occurred'};
   }
 }

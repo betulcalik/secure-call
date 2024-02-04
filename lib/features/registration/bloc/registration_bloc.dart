@@ -10,7 +10,7 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
     on<RegisterEvent>((event, emit) async {
       Map<String, dynamic> result = await registrationRepository.register(event.model);
       if (result["success"]) {
-        emit(RegisterSuccess(message: result["message"]));
+        emit(RegisterSuccess());
       } else {
         emit(RegisterFailure(message: result["message"]));
       }
@@ -19,7 +19,7 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
     on<LoginEvent>((event, emit) async {
       Map<String, dynamic> result = await registrationRepository.login(event.model);
       if (result["success"]) {
-        emit(LoginSuccess(message: result["message"]));
+        emit(LoginSuccess());
       } else {
         emit(LoginFailure(message: result["message"]));
       }
@@ -28,6 +28,15 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
     on<LogoutEvent>((event, emit) async {
       await registrationRepository.logout();
       emit(RegistrationInitial());
+    });
+
+    on<VerifyEvent>((event, emit) async {
+      Map<String, dynamic> result = await registrationRepository.verify(event.model);
+      if (result["success"]) {
+        emit(VerifySuccess());
+      } else {
+        emit(VerifyFailure(message: result["message"]));
+      }
     });
   }
 }
