@@ -98,7 +98,7 @@ class _MainScreenState extends State<MainScreen> {
       body: [
           const FavoritesScreen(),
           Container(),
-          const ContactsScreen(iconType: ContactCardIconType.noIcon),
+          const ContactsScreen(iconType: ContactCardIconType.call),
       ][currentPageIndex],
     );
   }
