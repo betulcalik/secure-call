@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:http/http.dart' as http;
 import 'package:secure_call/features/registration/models/login_model.dart';
 import 'package:secure_call/features/registration/models/register_model.dart';
@@ -16,6 +15,7 @@ class RegistrationRepository {
       body: {
         'firstName': model.firstName,
         'lastName': model.lastName,
+        'countryCode': model.countryCode,
         'phone': model.phone,
         'password': model.password,
       },

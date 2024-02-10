@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_contacts/contact.dart';
 import 'package:secure_call/features/contacts/constants/contact_card_icon_type.dart';
+import 'package:secure_call/widgets/buttons/call_button.dart';
 import 'package:secure_call/widgets/buttons/favorite_button.dart';
 
 class ContactCard extends StatelessWidget {
@@ -11,15 +12,7 @@ class ContactCard extends StatelessWidget {
   Widget cardIcon() {
     switch (iconType) {
       case ContactCardIconType.call:
-        return IconButton(
-            icon: const Icon(
-              Icons.call,
-              color: Colors.green,
-            ),
-            onPressed: () {
-
-            },
-        );
+        return CallButton(contact: contact);
       case ContactCardIconType.favorite:
         return FavoriteButton(contact: contact);
       case ContactCardIconType.noIcon:
