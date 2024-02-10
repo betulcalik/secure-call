@@ -13,10 +13,9 @@ class RegistrationRepository {
     var response = await http.post(
       Uri.parse('$url/register'),
       body: {
-        'firstName': model.firstName,
-        'lastName': model.lastName,
+        'username': "${model.firstName.toLowerCase()}.${model.lastName.toLowerCase()}",
         'countryCode': model.countryCode,
-        'phone': model.phone,
+        'phoneNumber': model.phoneNumber,
         'password': model.password,
       },
     );

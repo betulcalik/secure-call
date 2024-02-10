@@ -52,7 +52,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         firstName: _firstNameController.text,
         lastName: _lastNameController.text,
         countryCode: _currentCountryCode,
-        phone: _phoneController.text,
+        phoneNumber: _phoneController.text,
         password: _passwordController.text,
       ),
     );
