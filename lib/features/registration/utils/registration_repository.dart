@@ -7,17 +7,23 @@ import 'package:secure_call/features/registration/models/verify_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class RegistrationRepository {
-  String url = "http://localhost:5000";
+  String url = "https://ac75-88-230-155-88.ngrok-free.app";
 
   Future<Map<String, dynamic>> register(RegisterModel model) async {
+    Map<String, String> body = {
+      'username': "${model.firstName.toLowerCase()}.${model.lastName.toLowerCase()}",
+      'countryCode': model.countryCode,
+      'phoneNumber': model.phoneNumber,
+      'password': model.password,
+    };
+
     var response = await http.post(
       Uri.parse('$url/register'),
-      body: {
-        'username': "${model.firstName.toLowerCase()}.${model.lastName.toLowerCase()}",
-        'countryCode': model.countryCode,
-        'phoneNumber': model.phoneNumber,
-        'password': model.password,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
       },
+      body: jsonEncode(body),
     );
 
     if (response.statusCode == 200) {
