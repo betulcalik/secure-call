@@ -5,6 +5,7 @@ import 'package:secure_call/features/registration/models/register_model.dart';
 import 'package:secure_call/features/registration/models/resend_code_model.dart';
 import 'package:secure_call/features/registration/models/verify_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../../services/api_service.dart';
 
 class RegistrationRepository {
   String url = "https://ac75-88-230-155-88.ngrok-free.app";
@@ -26,22 +27,26 @@ class RegistrationRepository {
       body: jsonEncode(body),
     );
 
-    if (response.statusCode == 200) {
-      var jsonResponse = jsonDecode(response.body);
-      String token = jsonResponse['token'];
+    try {
+      http.Response response = await APIService.post(url, body);
 
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setString('token', token);
-      return {'success': true, 'message': 'Registration successful'};
-    }
+      if (response.statusCode ==  200 || response.statusCode ==  201) {
+        var jsonResponse = jsonDecode(response.body);
+        String token = jsonResponse['token'];
 
-    if (response.body.isNotEmpty) {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString('token', token);
+
+        return {'success': true, 'message': 'Registration successful'};
+      } else {
+        return {'success': false, 'message': 'Unexpected error occurred'};
+      }
+    } catch (e) {
       var errorResponse = jsonDecode(response.body);
       String errorMessage = errorResponse['message'];
+
       return {'success': false, 'message': errorMessage};
     }
-
-    return {'success': false, 'message': 'Unexpected error occurred'};
   }
 
   Future<Map<String, dynamic>> login(LoginModel model) async {
