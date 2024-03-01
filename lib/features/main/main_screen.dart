@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:secure_call/features/calls/widgets/calls_screen.dart';
 import 'package:secure_call/features/contacts/constants/contact_card_icon_type.dart';
 import 'package:secure_call/features/favorites/widgets/add_favorite_screen.dart';
 import '../../utils/custom_colors.dart';
@@ -97,7 +98,7 @@ class _MainScreenState extends State<MainScreen> {
       ),
       body: [
           const FavoritesScreen(),
-          Container(),
+          const CallsScreen(),
           const ContactsScreen(iconType: ContactCardIconType.call),
       ][currentPageIndex],
     );

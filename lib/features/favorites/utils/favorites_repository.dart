@@ -27,12 +27,13 @@ class FavoritesRepository {
 
   Future<void> setFavoriteContact(String id) async {
     final prefs = await SharedPreferences.getInstance();
-    final jsonString = prefs.getString("favorite_contact");
+    String? jsonString = prefs.getString("favorite_contact");
 
-    if (jsonString != null) {
-      final favorites = Map<String, bool>.from(json.decode(jsonString));
-      favorites[id] = !(favorites[id] ?? false);
-      prefs.setString("favorite_contact", json.encode(favorites));
-    }
+    Map<String, bool> favorites = jsonString != null
+        ? Map<String, bool>.from(json.decode(jsonString))
+        : {};
+
+    favorites[id] = !(favorites[id] ?? false);
+    prefs.setString("favorite_contact", json.encode(favorites));
   }
 }

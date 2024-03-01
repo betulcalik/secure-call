@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:secure_call/features/call/bloc/call_bloc.dart';
 import 'package:secure_call/features/call/utils/call_repository.dart';
+import 'package:secure_call/features/calls/bloc/calls_bloc.dart';
+import 'package:secure_call/features/calls/bloc/calls_event.dart';
+import 'package:secure_call/features/calls/utils/calls_repository.dart';
 import 'package:secure_call/features/contacts/bloc/contacts_bloc.dart';
 import 'package:secure_call/features/contacts/bloc/contacts_event.dart';
 import 'package:secure_call/features/contacts/utils/contact_repository.dart';
@@ -22,6 +25,7 @@ class MyApp extends StatelessWidget {
   final ContactsBloc contactsBloc = ContactsBloc(ContactRepository())..add(LoadContacts());
   final FavoritesBloc favoritesBloc = FavoritesBloc(FavoritesRepository(ContactRepository()))..add(LoadFavoriteContacts());
   final RegistrationBloc registrationBloc = RegistrationBloc(RegistrationRepository());
+  final CallsBloc callsBloc = CallsBloc(CallsRepository(ContactRepository()))..add(LoadRecentCalls());
   final CallBloc callBloc = CallBloc(CallRepository());
 
   MyApp({super.key});
@@ -33,6 +37,7 @@ class MyApp extends StatelessWidget {
         Provider<ContactsBloc>(create: (context) => contactsBloc),
         Provider<FavoritesBloc>(create: (context) => favoritesBloc),
         Provider<RegistrationBloc>(create: (context) => registrationBloc),
+        Provider<CallsBloc>(create: (context) => callsBloc),
         Provider<CallBloc>(create: (context) => callBloc),
       ],
       child: MaterialApp(

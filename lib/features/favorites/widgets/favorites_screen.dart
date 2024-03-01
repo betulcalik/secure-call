@@ -17,6 +17,10 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
   @override
   void initState() {
     super.initState();
+    loadFavoriteContacts();
+  }
+
+  loadFavoriteContacts() {
     context.read<FavoritesBloc>().add(LoadFavoriteContacts());
   }
 
