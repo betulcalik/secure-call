@@ -5,6 +5,7 @@ import 'package:secure_call/features/call/bloc/call_state.dart';
 import '../../../utils/custom_colors.dart';
 import '../bloc/call_bloc.dart';
 import '../bloc/call_event.dart';
+import 'dart:async';
 
 class CallScreen extends StatefulWidget {
   final Contact contact;
@@ -16,10 +17,19 @@ class CallScreen extends StatefulWidget {
 }
 
 class _CallScreenState extends State<CallScreen> {
+  Timer? _timer;
+  Duration _elapsedTime = Duration.zero;
+
   @override
   void initState() {
     super.initState();
     startCall();
+  }
+
+  @override
+  void dispose() {
+    endTimer();
+    super.dispose();
   }
 
   void startCall() {
@@ -28,10 +38,30 @@ class _CallScreenState extends State<CallScreen> {
 
   void endCall() {
     BlocProvider.of<CallBloc>(context).add(CallEnded());
+    endTimer();
+  }
+
+  void startTimer() {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      setState(() {
+        _elapsedTime = _elapsedTime + const Duration(seconds: 1);
+      });
+    });
+  }
+
+  void endTimer() {
+    _timer?.cancel();
   }
 
   void pop() {
     Navigator.pop(context);
+  }
+
+  String _formatDuration(Duration duration) {
+    String twoDigits(int n) => n.toString().padLeft(2, "0");
+    String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
+    String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
+    return "${twoDigits(duration.inHours)}:$twoDigitMinutes:$twoDigitSeconds";
   }
 
   @override
@@ -45,6 +75,10 @@ class _CallScreenState extends State<CallScreen> {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           pop();
         });
+      }
+
+      if (state is CallActive) {
+        startTimer();
       }
     }, child: BlocBuilder<CallBloc, CallState>(builder: (context, state) {
       return Scaffold(
@@ -80,6 +114,17 @@ class _CallScreenState extends State<CallScreen> {
                     child: Text(
                       "Connecting...",
                       style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.white,
+                          fontWeight: FontWeight.normal),
+                    ),
+                  ),
+                if (state is CallActive)
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+                    child: Text(
+                      '${_formatDuration(_elapsedTime)}',
+                      style: const TextStyle(
                           fontSize: 14,
                           color: Colors.white,
                           fontWeight: FontWeight.normal),

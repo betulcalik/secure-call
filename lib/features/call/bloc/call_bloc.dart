@@ -9,7 +9,7 @@ class CallBloc extends Bloc<CallEvent, CallState> {
   CallBloc(this.callRepository): super(CallInitial()) {
     on<CallStarted>((event, emit) async {
       emit(CallInitial());
-      emit(CallConnecting());
+      emit(CallActive());
     });
 
     on<CallEnded>((event, emit) async {
