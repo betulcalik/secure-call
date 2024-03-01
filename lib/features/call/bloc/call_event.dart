@@ -1,5 +1,5 @@
 abstract class CallEvent { }
 
-class CallStartedEvent extends CallEvent { }
+class CallStarted extends CallEvent { }
 
-class CallEndedEvent extends CallEvent { }
+class CallEnded extends CallEvent { }

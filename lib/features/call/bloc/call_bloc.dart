@@ -7,11 +7,11 @@ class CallBloc extends Bloc<CallEvent, CallState> {
   final CallRepository callRepository;
 
   CallBloc(this.callRepository): super(CallInitial()) {
-    on<CallStartedEvent>((event, emit) async {
+    on<CallStarted>((event, emit) async {
 
     });
 
-    on<CallEndedEvent>((event, emit) async {
+    on<CallEnded>((event, emit) async {
 
     });
   }
