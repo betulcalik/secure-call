@@ -47,7 +47,7 @@ class MyApp extends StatelessWidget {
           fontFamily: 'Montserrat',
           useMaterial3: true,
         ),
-        home: OnboardingScreen(),
+        home: MainScreen(),
       ),
     );
   }
