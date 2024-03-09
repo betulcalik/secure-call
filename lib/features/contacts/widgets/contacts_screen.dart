@@ -77,7 +77,10 @@ class _ContactsScreenState extends State<ContactsScreen> {
                   return ListView.builder(
                     itemCount: _filteredContacts.length,
                     itemBuilder: (context, index) =>
-                        ContactCard(contact: _filteredContacts[index], iconType: widget.iconType),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 0),
+                          child: ContactCard(contact: _filteredContacts[index], iconType: widget.iconType),
+                        ),
                   );
                 } else {
                   return Container();
