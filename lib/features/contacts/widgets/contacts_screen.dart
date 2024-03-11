@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:secure_call/features/contacts/bloc/contacts_bloc.dart';
 import 'package:secure_call/features/contacts/bloc/contacts_state.dart';
 import 'package:secure_call/features/contacts/widgets/contact_card.dart';
-import 'package:flutter_contacts/contact.dart';
 import 'package:secure_call/widgets/textfields/search_textfield.dart';
 import '../bloc/contacts_event.dart';
 import '../constants/contact_card_icon_type.dart';
@@ -48,13 +47,20 @@ class _ContactsScreenState extends State<ContactsScreen> {
                   );
                 } else if (state is LoadedContacts) {
 
-                  return ListView.builder(
+                  return ListView.separated(
                     itemCount: state.contacts.length,
                     itemBuilder: (context, index) =>
                         Padding(
                           padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 0),
                           child: ContactCard(contact: state.contacts[index], iconType: widget.iconType),
                         ),
+                    separatorBuilder: (context, index) => const Padding(
+                      padding: EdgeInsets.fromLTRB(20.0, 0, 20.0, 0),
+                      child: Divider(
+                        color: Colors.grey,
+                        thickness: 0.5,
+                      ),
+                    ),
                   );
                 } else {
                   return Container();

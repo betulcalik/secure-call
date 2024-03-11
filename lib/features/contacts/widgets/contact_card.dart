@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_contacts/contact.dart';
 import 'package:secure_call/features/contacts/constants/contact_card_icon_type.dart';
-import 'package:secure_call/utils/custom_colors.dart';
 import 'package:secure_call/widgets/buttons/call_button.dart';
 import 'package:secure_call/widgets/buttons/favorite_button.dart';
 import 'package:secure_call/widgets/cards/outlined_card.dart';
@@ -24,8 +23,7 @@ class ContactCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return OutlinedCard(
-      child: ListTile(
+    return ListTile(
         leading: contact.photo != null ? CircleAvatar(
           backgroundImage: Image.memory(contact.photo!).image,
         ) : null,
@@ -37,11 +35,10 @@ class ContactCard extends StatelessWidget {
             Ink(
               decoration: const ShapeDecoration(
                 shape: CircleBorder()
-              ),
-              child: cardIcon(),
-              ),
-          ],
-        ),
+            ),
+            child: cardIcon(),
+          ),
+        ],
       ),
     );
   }
