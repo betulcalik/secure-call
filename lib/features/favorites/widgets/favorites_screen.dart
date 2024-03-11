@@ -47,13 +47,20 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                   return const Center(child: Text("No favorite contacts found"));
                 }
 
-                return ListView.builder(
+                return ListView.separated(
                   itemCount: state.contacts.length,
                   itemBuilder: (context, index) =>
                       Padding(
                         padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 0),
                         child: ContactCard(contact: state.contacts[index], iconType: ContactCardIconType.favorite),
                       ),
+                  separatorBuilder: (context, index) => const Padding(
+                    padding: EdgeInsets.fromLTRB(20.0, 0, 20.0, 0),
+                    child: Divider(
+                      color: Colors.grey,
+                      thickness: 0.5,
+                    ),
+                  ),
                 );
               } else {
                 return Container();

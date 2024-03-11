@@ -37,10 +37,18 @@ class _CallsScreenState extends State<CallsScreen> {
 
           return Padding(
             padding: const EdgeInsets.only(top: 10),
-            child: ListView.builder(
+            child: ListView.separated(
               itemCount: state.contacts.length,
-              itemBuilder: (context, index) =>
-                  ContactCard(contact: state.contacts[index], iconType: ContactCardIconType.noIcon),
+              itemBuilder: (context, index) => ContactCard(
+                  contact: state.contacts[index],
+                  iconType: ContactCardIconType.noIcon),
+              separatorBuilder: (context, index) => const Padding(
+                padding: EdgeInsets.fromLTRB(20.0, 0, 20.0, 0),
+                child: Divider(
+                  color: Colors.grey,
+                  thickness: 0.5,
+                ),
+              ),
             ),
           );
         } else {
