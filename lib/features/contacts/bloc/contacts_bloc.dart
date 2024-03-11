@@ -16,5 +16,16 @@ class ContactsBloc extends Bloc<ContactsEvent, ContactsState> {
         emit(LoadedContacts([]));
       }
     });
+
+    on<SearchContacts>((event, emit) async {
+      emit(LoadingContacts());
+      try {
+        final contacts = await contactRepository.getContacts();
+        final filteredContacts = contacts.where((contact) => contact.displayName.toLowerCase().contains(event.searchTerm.toLowerCase())).toList();
+        emit(LoadedContacts(filteredContacts));
+      } catch (_) {
+        emit(LoadedContacts([]));
+      }
+    });
   }
 }

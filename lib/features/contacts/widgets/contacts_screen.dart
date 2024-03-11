@@ -4,6 +4,7 @@ import 'package:secure_call/features/contacts/bloc/contacts_bloc.dart';
 import 'package:secure_call/features/contacts/bloc/contacts_state.dart';
 import 'package:secure_call/features/contacts/widgets/contact_card.dart';
 import 'package:flutter_contacts/contact.dart';
+import 'package:secure_call/widgets/textfields/search_textfield.dart';
 import '../bloc/contacts_event.dart';
 import '../constants/contact_card_icon_type.dart';
 
@@ -16,24 +17,14 @@ class ContactsScreen extends StatefulWidget {
 }
 
 class _ContactsScreenState extends State<ContactsScreen> {
-  List<Contact> _contacts = [];
-  List<Contact> _filteredContacts = [];
-
   @override
   void initState() {
     super.initState();
-    context.read<ContactsBloc>().add(LoadContacts());
+    loadContacts();
   }
 
-  onSearch(String searchText) {
-    setState(() {
-      _filteredContacts = searchText.isEmpty
-          ? _contacts
-          : _contacts
-          .where((contact) =>
-          contact.displayName.toLowerCase().contains(searchText.toLowerCase()))
-          .toList();
-    });
+  loadContacts() {
+    context.read<ContactsBloc>().add(LoadContacts());
   }
 
   @override
@@ -43,22 +34,9 @@ class _ContactsScreenState extends State<ContactsScreen> {
           Container(
             padding: const EdgeInsets.all(8.0),
             height: 60,
-            child: TextField(
-              onChanged: (value) => onSearch(value),
-              decoration: InputDecoration(
-                filled: true,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                  borderSide: BorderSide.none,
-                ),
-                hintStyle: TextStyle(
-                  fontSize: 14,
-                  color: Colors.grey.shade500,
-                ),
-                hintText: "Search contacts",
-                prefixIcon: const Icon(Icons.search),
-                isDense: true, // decrease height of textfield
-              ),
+            child: SearchTextField(
+              onChanged: (value) => context.read<ContactsBloc>().add(SearchContacts(value)),
+              hintText: "Search contacts",
             ),
           ),
           Expanded(
@@ -69,17 +47,13 @@ class _ContactsScreenState extends State<ContactsScreen> {
                     child: CircularProgressIndicator(),
                   );
                 } else if (state is LoadedContacts) {
-                  if (_contacts.isEmpty) {
-                    _contacts = state.contacts;
-                    _filteredContacts = state.contacts;
-                  }
 
                   return ListView.builder(
-                    itemCount: _filteredContacts.length,
+                    itemCount: state.contacts.length,
                     itemBuilder: (context, index) =>
                         Padding(
                           padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 0),
-                          child: ContactCard(contact: _filteredContacts[index], iconType: widget.iconType),
+                          child: ContactCard(contact: state.contacts[index], iconType: widget.iconType),
                         ),
                   );
                 } else {
