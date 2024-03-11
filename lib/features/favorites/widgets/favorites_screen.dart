@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:secure_call/features/contacts/constants/contact_card_icon_type.dart';
+import 'package:secure_call/widgets/textfields/search_textfield.dart';
 import '../../contacts/widgets/contact_card.dart';
 import '../bloc/favorites_bloc.dart';
 import '../bloc/favorites_event.dart';
@@ -31,22 +32,9 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
         Container(
           padding: const EdgeInsets.all(8.0),
           height: 60,
-          child: TextField(
+          child: SearchTextField(
             onChanged: (value) => context.read<FavoritesBloc>().add(SearchFavoriteContacts(value)),
-            decoration: InputDecoration(
-              filled: true,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8.0),
-                borderSide: BorderSide.none,
-              ),
-              hintStyle: TextStyle(
-                fontSize: 14,
-                color: Colors.grey.shade500,
-              ),
-              hintText: "Search favorite contacts",
-              prefixIcon: const Icon(Icons.search),
-              isDense: true, // decrease height of textfield
-            ),
+            hintText: "Search favorite contacts",
           ),
         ),
         Expanded(
@@ -62,7 +50,10 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                 return ListView.builder(
                   itemCount: state.contacts.length,
                   itemBuilder: (context, index) =>
-                      ContactCard(contact: state.contacts[index], iconType: ContactCardIconType.favorite),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 0),
+                        child: ContactCard(contact: state.contacts[index], iconType: ContactCardIconType.favorite),
+                      ),
                 );
               } else {
                 return Container();
